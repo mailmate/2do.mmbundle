@@ -1,0 +1,25 @@
+#!/usr/bin/ruby -w
+# encoding: UTF-8
+
+require 'cgi'
+
+subject = ENV['MM_SUBJECT']
+message = "<message:<" + ENV['MM_MESSAGE_ID'] + ">>"
+
+range_string = ENV['MM_SELECTED_RANGE']
+selection = ""
+if range_string.nil?
+  detect_path = ENV['MM_SUPPORT_PATH'] + "/bin/detect"
+  date = `#{detect_path}`
+  selection = date.chop
+else
+  canonical = $stdin.read
+  offset1,offset2 = range_string.match(/(\d+):(\d+)/).captures
+  range = Integer(offset1)..Integer(offset2)
+  selection = canonical[range]
+  selection.gsub!("\n", ' ')
+end
+
+# Use 2Do URL scheme to create the calendar entry (http://2doapp.com/kb/article/url-scheme-supported-by-2do-for-apps-like-launch-center-pro.html)
+# twodo:///add?task=[title]&forlist=[list name]&note=[note]&priority=[0,1,2,3]&tags=[comma separated names]
+system("open", "twodo://add?task=" + subject + "&note=" + selection + " Email: message://%3c" + ENV['MM_MESSAGE_ID'] + "%3e" )

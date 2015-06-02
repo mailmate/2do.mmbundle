@@ -21,6 +21,8 @@ if !selection.empty?
   note = note + "\n\n" +  selection
 end
 
-# 2Do URL scheme: http://www.2doapp.com/url-schemes-in-ios-and-os-x/
-# twodo:///add?task=[title]&forlist=[list name]&note=[note]&priority=[0,1,2,3]&tags=[comma separated names]
-system("open", "twodo://add?task=" + CGI::escape(subject).gsub('+', '%20') + "&note=" + CGI::escape(note).gsub('+', '%20'))
+# 2Do URL scheme: http://www.2doapp.com/kb/article/url-scheme-supported-by-2do-for-apps-like-launch-center-pro.html
+# changed in v2.
+# twodo://x-callback-url/add?task=[prompt:Text]&type=[prompt-num:Task Type]&forlist=[prompt:List Name]&forParentTask=[prompt:Task Unique ID]&note=[prompt:Notes]&priority=[prompt-num:Priority]&starred=[prompt-num:Is Starred]&tags=[prompt:Tags]&due=[prompt:Due Date]&dueTime=[prompt:Due Time]&start=[prompt:Start Date]&repeat=[prompt-num:Repeat]&action=[prompt:Task Action]&ignoreDefaults=[prompt-num:Ignore Due Date Defaults]
+url = "twodo://x-callback-url/add?task=" + CGI::escape(subject).gsub('+', '%20') + "&note=" + CGI::escape(note).gsub('+', '%20')
+system("open", url)

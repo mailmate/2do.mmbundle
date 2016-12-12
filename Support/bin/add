@@ -5,6 +5,7 @@ require 'cgi'
 
 subject = ENV['MM_SUBJECT']
 note = "Email: message://%3c" + ENV['MM_MESSAGE_ID'] + "%3e"
+message_url = "message://%3c" + ENV['MM_MESSAGE_ID'] + "%3e"
 
 range_string = ENV['MM_SELECTED_RANGE']
 selection = ""
@@ -24,5 +25,5 @@ end
 # 2Do URL scheme: http://www.2doapp.com/kb/article/url-scheme-supported-by-2do-for-apps-like-launch-center-pro.html
 # changed in v2.
 # twodo://x-callback-url/add?task=[prompt:Text]&type=[prompt-num:Task Type]&forlist=[prompt:List Name]&forParentTask=[prompt:Task Unique ID]&note=[prompt:Notes]&priority=[prompt-num:Priority]&starred=[prompt-num:Is Starred]&tags=[prompt:Tags]&due=[prompt:Due Date]&dueTime=[prompt:Due Time]&start=[prompt:Start Date]&repeat=[prompt-num:Repeat]&action=[prompt:Task Action]&ignoreDefaults=[prompt-num:Ignore Due Date Defaults]
-url = "twodo://x-callback-url/add?task=" + CGI::escape(subject).gsub('+', '%20') + "&note=" + CGI::escape(note).gsub('+', '%20')
+url = "twodo://x-callback-url/add?task=" + CGI::escape(subject).gsub('+', '%20') + "&note=" + CGI::escape(note).gsub('+', '%20') + "&action=url:" + message_url
 system("open", url)
